@@ -1,0 +1,60 @@
+{
+ "v": 4,
+ "createdOnFiles": {
+  "v": 1,
+  "at": "2026-11-06T13:40:00Z"
+ },
+ "lists": "css",
+ "title": "PINNs for Delhi PM2.5",
+ "order": [
+  "cover",
+  "question",
+  "data",
+  "equation",
+  "assumptions",
+  "scaling",
+  "analysis",
+  "verification",
+  "sensitivity",
+  "pinn",
+  "weight",
+  "twin",
+  "real",
+  "why",
+  "conclusion"
+ ],
+ "cover": "cover",
+ "sections": {
+  "s1": {
+   "description": "Presenter 1: the question and the real data.",
+   "start": "cover"
+  },
+  "s2": {
+   "description": "Presenter 2: the model, its assumptions and its scaling.",
+   "start": "equation"
+  },
+  "s3": {
+   "description": "Presenter 3: analysis, verification and sensitivity.",
+   "start": "analysis"
+  },
+  "s4": {
+   "description": "Presenter 4: the PINN, loss balancing and the synthetic twin.",
+   "start": "pinn"
+  },
+  "s5": {
+   "description": "Presenter 5: real-data results, interpretation and conclusion.",
+   "start": "real"
+  }
+ },
+ "faces": {
+  "source-serif-4": {
+   "family": "Source Serif 4",
+   "href": "https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400..700&display=swap"
+  },
+  "ibm-plex-sans": {
+   "family": "IBM Plex Sans",
+   "href": "https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;600&display=swap"
+  }
+ },
+ "designSystems": []
+}

@@ -1,0 +1,21 @@
+{
+  "kind": "SYNTHETIC",
+  "station_layout": "real_winter_monitor_coordinates",
+  "n_stations": 45,
+  "grid": [
+    51,
+    54
+  ],
+  "domain_km": [
+    -30.255804388599785,
+    19.519873799095382,
+    -25.57483312824856,
+    27.798731661139684
+  ],
+  "start": "2024-11-12 00:00:00+00:00",
+  "hours": 73,
+  "D_true": 300.0,
+  "lam_true": 5e-06,
+  "C_inflow": 60.0,
+  "noise_rel": 0.05
+}

@@ -1,0 +1,9 @@
+DataOnlyNN: 45s, best val MSE 0.0124, D=300
+PINN: 1306s, best val MSE 0.0096, D=60
+
+model              MAE    RMSE     R2 | vs truth RMSE | field RMSE
+IDW              22.18   32.13  0.952 |         29.31 |        nan
+RandomForest     22.62   36.80  0.937 |         35.11 |        nan
+DataOnlyNN       14.39   21.24  0.979 |         15.90 |      46.30
+PINN             13.52   19.09  0.983 |         13.81 |      27.97
+PINN D learned 60 (true 300.0)

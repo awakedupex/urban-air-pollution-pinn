@@ -1,0 +1,14 @@
+chunk 0 (0-80 h) DataOnlyNN: 59s, D=300
+chunk 0 (0-80 h) PINN: 1939s, D=101
+chunk 1 (80-160 h) DataOnlyNN: 103s, D=300
+chunk 1 (80-160 h) PINN: 1903s, D=100
+chunk 2 (160-240 h) DataOnlyNN: 90s, D=300
+chunk 2 (160-240 h) PINN: 1881s, D=144
+
+spring (6 held-out stations)
+model              MAE    RMSE     R2    bias
+StationMean      16.95   25.86  0.617   -0.39
+IDW              19.78   31.95  0.415   -0.45
+RandomForest     24.94   36.77  0.225    0.84
+DataOnlyNN       27.66   39.18  0.121   12.21
+PINN             20.57   31.65  0.426    2.57

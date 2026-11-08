@@ -1,0 +1,20 @@
+{
+  "winter": {
+    "raw_pm25_records": 43339,
+    "after_cleaning": 12516,
+    "inside_box": 12516,
+    "after_coverage": 9828,
+    "stations": 45,
+    "start_utc": "2025-11-09 18:30:00+00:00",
+    "end_utc": "2025-11-19 18:30:00+00:00"
+  },
+  "spring": {
+    "raw_pm25_records": 45039,
+    "after_cleaning": 12619,
+    "inside_box": 12619,
+    "after_coverage": 9693,
+    "stations": 42,
+    "start_utc": "2025-02-28 18:30:00+00:00",
+    "end_utc": "2025-03-10 18:30:00+00:00"
+  }
+}

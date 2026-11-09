@@ -22,9 +22,19 @@
 
 \title{Physics-Informed Neural Networks for Urban Air Pollution Modelling:\\
 Analysis, Simulation and Prediction of \PMtwo{} over Delhi}
-\author{Mathematical Modelling Group Project\\[2pt]
-\small Member 1 \quad Member 2 \quad Member 3 \quad Member 4 \quad Member 5}
-\date{November 2026}
+\author{
+    Mohammad Zaid Agha \\ 2024ADPS0840G
+    \and
+    Adwait Eklavya \\ 2024ADPS0825G
+    \and
+    Shivank Mishra \\ 2024ADPS0823G
+    \and
+    Asvin Subderiyal \\ 2024ADPS0867G
+    \and
+    Rayasam Venkata Pradyumn \\ 2024B5AD0973G
+}
+%\small Member 1 \quad Member 2 \quad Member 3 \quad Member 4 \quad Member 5}
+\date{}
 
 \begin{document}
 \maketitle
@@ -205,8 +215,28 @@ profile $g(\tau)$ with mean one, injected into the mixing layer: $S=q\,g/\max(H,
 $H_{\min}=\SI{50}{m}$ to avoid the singularity at the very small ERA5 night-time values ($\approx$\SI{10}{m}).
 \item[A6] \textbf{Boundaries.} Inflow concentrations (regional background) are unknown; we impose only a weak
 zero-normal-gradient condition on outflow faces.
-\item[A7] \textbf{No entrainment term.} Dilution of the layer when it deepens in the morning, and the exchange with
-the residual layer, are not represented explicitly.
+
+\item[A7] \textbf{No entrainment term.} The dilution of the layer when it
+  deepens, and the exchange with the residual layer aloft, are not represented
+  (the term derived in Section~6.1 is omitted). This is not a small
+  correction: during the morning growth of the boundary layer, from
+  $\sim$50~m to $\sim$1500~m in about five hours,
+  $(1/H)\,\mathrm{d}H/\mathrm{d}t \approx 2\times10^{-4}\ \mathrm{s^{-1}}$,
+  about forty times the removal rate $\lambda$. For a few hours each day it is
+  therefore the largest loss term in the equation. We omit it to keep the
+  forcing to quantities available from ERA5 and to avoid introducing the
+  unknown residual-layer concentration $C_r$; Sections~7.5 and~10.2 discuss
+  its consequences.\item[A7] \textbf{No entrainment term.} The dilution of the layer when it
+  deepens, and the exchange with the residual layer aloft, are not represented
+  (the term derived in Section~6.1 is omitted). This is not a small
+  correction: during the morning growth of the boundary layer, from
+  $\sim$50~m to $\sim$1500~m in about five hours,
+  $(1/H)\,\mathrm{d}H/\mathrm{d}t \approx 2\times10^{-4}\ \mathrm{s^{-1}}$,
+  about forty times the removal rate $\lambda$. For a few hours each day it is
+  therefore the largest loss term in the equation. We omit it to keep the
+  forcing to quantities available from ERA5 and to avoid introducing the
+  unknown residual-layer concentration $C_r$; Sections~7.5 and~10.2 discuss
+  its consequences.
 \end{enumerate}
 
 %=====================================================================
@@ -227,6 +257,27 @@ where $\tau(t)$ is the local hour. Units: $C$ in µg\,m$^{-3}$, $q$ in µg\,m$^{
 stations and enters through the data loss. On outflow faces ($\bm u\cdot\bm n>0$) we impose
 $\nabla C\cdot\bm n=0$; for the synthetic truth inflow faces additionally carry the Dirichlet value
 $C=C_{\mathrm{in}}$.
+\paragraph{Omitted dilution term.}
+The source term in (1) follows from a mass balance on an air column of unit
+horizontal area and depth $H(t)$, which contains the mass $M = HC$:
+\begin{equation*}
+  \frac{\partial (HC)}{\partial t} + \nabla\!\cdot\!(H\mathbf{u}C)
+  = \nabla\!\cdot\!(HD\nabla C) + q\,g - \lambda H C .
+\end{equation*}
+Because $H$ depends on time only, dividing by $H$ recovers (1) together with one
+additional term, $-(C/H)\,\mathrm{d}H/\mathrm{d}t$, which arises from the time
+derivative of the product $HC$. This term represents dilution of the pollutant
+already in the layer as the layer deepens. In its physically consistent form it
+acts only during growth and dilutes towards the concentration $C_r$ of the
+residual layer aloft,
+\begin{equation*}
+  -\,\frac{\max\{0,\ \mathrm{d}H/\mathrm{d}t\}}{H}\,\bigl(C - C_r\bigr),
+\end{equation*}
+since a collapsing layer leaves air behind rather than compressing it. Equation
+(1) omits this term (A7). The model is therefore only partly consistent: the
+column balance is used for the source $q\,g/H$ but not for the storage term, so
+the dilution of new emissions is represented but the dilution of the existing
+pollutant is not.
 
 \subsection{Non-dimensionalisation and dimensionless groups}
 With $x' = (x-x_c)/L$, $y'=(y-y_c)/L$, $t'=2t/T-1$ and $C'=C/C_{\mathrm{ref}}$, where $L=\SI{26.7}{km}$ is the
@@ -234,7 +285,7 @@ half-width, $T$ the window length and $C_{\mathrm{ref}}$ the mean training conce
 becomes
 \begin{equation}
 \pd{C'}{t'} + U\pd{C'}{x'} + V\pd{C'}{y'} = K\nabla'^2C' - \Lambda C' + S',\qquad
-U=\frac{uT}{2L},\; K=\frac{DT}{2L^2},\; \Lambda=\frac{\lambda T}{2},\; S'=\frac{S\,T}{2C_{\mathrm{ref}}}.
+U=\frac{uT}{2L},\; V=\frac{vT}{2L},\; K=\frac{DT}{2L^2},\; \Lambda=\frac{\lambda T}{2},\; S'=\frac{S\,T}{2C_{\mathrm{ref}}}.
 \label{eq:nondim}
 \end{equation}
 The physically meaningful groups are the P\'eclet and Damk\"ohler numbers over the domain size
@@ -294,6 +345,9 @@ Integrating \eqref{eq:adr} over $\Omega$ gives
 so in the absence of removal, sources and boundary flux the total mass is conserved (tested to $10^{-3}$ for
 the solver). By the parabolic maximum principle, $C_0\ge0$, $S\ge0$ and non-negative inflow values imply
 $C\ge0$; the PINN enforces $C\ge0$ and $q\ge0$ by construction through a softplus output.
+\footnote{Equation (6) is the balance for the model as written. The physically
+conserved quantity is the column mass $\int_\Omega HC\,\mathrm{d}A$, which
+equation (1) conserves only when $H$ is constant; see Section~6.1.}
 
 \subsection{Identifiability}
 Two structural issues determine which parameters the data can constrain.
@@ -315,6 +369,18 @@ the result at the 45 monitor locations (Figure~\ref{fig:sens}). Over the ranges 
 $\partial\ln\bar C/\partial\ln p$ of the station-mean concentration is $-0.15$ for $\lambda$, $-0.03$ for $D$ and
 $-0.35$ for $H_{\min}$. The near-zero sensitivity to $D$ is the quantitative form of the identifiability
 argument; the mixing-height floor, a modelling choice, matters more than either physical rate.
+
+We attribute this partly to the omitted dilution term (A7): the night-time
+floor and the morning transition out of it are the parts of the
+boundary-layer cycle that the model represents least well, and without the
+dilution term the night-time accumulation is removed only by advection and
+the slow sink $\lambda$, so the result depends strongly on how deep the
+night-time layer is assumed to be.We attribute this partly to the omitted dilution term (A7): the night-time
+floor and the morning transition out of it are the parts of the
+boundary-layer cycle that the model represents least well, and without the
+dilution term the night-time accumulation is removed only by advection and
+the slow sink $\lambda$, so the result depends strongly on how deep the
+night-time layer is assumed to be.
 
 \begin{figure}[htbp]
 \centering
@@ -610,9 +676,17 @@ already captures most of the variance at an unseen station, leaving little that 
 correlate with the ERA5 wind at $r=0.50$ and read much lower ($0.55$ versus \SI{1.38}{m/s}; Figure~\ref{fig:wind}).
 Rooftop instruments in the urban canopy are expected to read low, but the moderate correlation means that the
 transporting wind, and certainly its spatial variation, are uncertain.
-\item \emph{Missing processes.} The model has no entrainment term (A7), no regional inflow (A6) and no secondary aerosol
-formation (A4). Regional transport during the post-monsoon season enters the domain through the boundaries, which the PINN
-cannot represent except through the learned source.
+\item \textbf{Missing processes.} The model has no entrainment term (A7), no
+  regional inflow (A6) and no secondary aerosol formation (A4). Regional
+  transport during the post-monsoon season enters the domain through the
+  boundaries, which the PINN cannot represent except through the learned
+  source. The missing dilution term has a specific consequence: the observed
+  morning decline (Figure~2) is largely a dilution effect, and the only
+  component of the model that can reproduce it is the learned profile $g$.
+  On observed data the late-morning and afternoon values of $g$ therefore
+  partly represent boundary-layer dilution rather than emissions, and should
+  not be read as an emission inventory. This does not affect the synthetic
+  twin, whose truth was generated by the same equation and also lacks the term.
 \item \emph{Unidentified diffusivity.} Across the 18 real-data chunks the learned $D$ ranges from 37 to 266~m$^2$/s with
 no consistent value, as on the twin.
 \end{itemize}
@@ -639,9 +713,12 @@ always better than the data-only network and never clearly better than IDW.
 \section{Limitations}
 %=====================================================================
 \begin{itemize}
-\item \textbf{Model structure.} Two-dimensional, well-mixed, uniform-wind transport with constant $D$ and $\lambda$ and no
-chemistry or entrainment (A1--A7). The real-data results indicate that these simplifications, not the PINN method,
-limit accuracy.
+\item \textbf{Model structure.} Two-dimensional, well-mixed, uniform-wind
+  transport with constant $D$ and $\lambda$ and no chemistry or entrainment
+  (A1--A7). The omission of entrainment is also an internal inconsistency:
+  the column mass balance that gives the source $q\,g/H$ also gives a
+  dilution term that we omit (Section~6.1). The real-data results indicate
+  that these simplifications, not the PINN method, limit accuracy.
 \item \textbf{Boundary conditions.} Inflow concentrations are unknown; only a weak outflow condition is imposed. A regional
 background (for example from a chemical transport model, labelled as model output) would be the natural next step.
 \item \textbf{Sparse data and short windows.} 30 training stations, 6--8 test stations and two ten-day windows give wide

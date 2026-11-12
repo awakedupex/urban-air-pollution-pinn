@@ -39,3 +39,7 @@ The report is compiled with `tectonic` (`brew install tectonic`). Data provenanc
 | `src/evaluation/` | Metrics, leakage guards |
 | `experiments/` | Runnable experiments; outputs go to `results/` |
 | `tests/` | pytest suite (data, physics, PINN, metrics) |
+
+## Note on LLM Usage
+
+Anthropic's Claude was used to assist us in writing and debugging code.

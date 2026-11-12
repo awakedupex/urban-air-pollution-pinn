@@ -23,7 +23,7 @@ This writes:
 
 ## Windows (config/config.yaml)
 
-- Winter: 2024-11-10 to 2024-11-20 (local time)
+- Winter: 2025-11-10 to 2025-11-20 (local time)
 - Spring: 2025-03-01 to 2025-03-11 (local time)
 
 ## Known raw-data artefacts
